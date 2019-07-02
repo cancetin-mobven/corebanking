@@ -74,7 +74,7 @@ for complete instructions and additional options._
 
         mvn clean install
 
-4. You will deploy `target/OnlineBanking.war` to the /webapps/.. running instance of the server.
+4. You will deploy `target/corebanking.war` to the /webapps/.. running instance of the server.
 
 
 Access the application
