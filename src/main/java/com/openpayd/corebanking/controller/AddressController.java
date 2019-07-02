@@ -24,16 +24,16 @@ public class AddressController {
 
     @RequestMapping(value = "/saveAddress", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<AddressDTO> saveAddress(@RequestBody AddressDTO addressDTO, HttpServletRequest request){
+    public ResponseEntity<AddressDTO> saveAddress(@RequestBody AddressDTO addressDTO, HttpServletRequest request) {
 
-        AddressDTO  addressDto = null;
-        try{
+        AddressDTO addressDto = null;
+        try {
             addressDto = addressService.createAddress(addressDTO);
-        }catch (Exception e){
+        } catch (Exception e) {
             returnCode = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<AddressDTO>(addressDto , returnCode);
+        return new ResponseEntity<AddressDTO>(addressDto, returnCode);
     }
 
 

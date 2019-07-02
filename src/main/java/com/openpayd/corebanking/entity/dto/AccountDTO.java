@@ -4,19 +4,25 @@ import com.openpayd.corebanking.entity.Account;
 import com.openpayd.corebanking.entity.AccountType;
 import com.openpayd.corebanking.entity.BalanceStatus;
 import com.openpayd.corebanking.entity.Client;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
-
+@ApiModel( value = "Account", description = "Account Resource Representation" )
 public class AccountDTO {
 
+    @ApiModelProperty( value = "Type of account consisting SAVINGS or CURRENT", required = true )
     public AccountType accountType;
 
+    @ApiModelProperty( value = "balance of account", required = true )
     public double balance;
 
+    @ApiModelProperty( value = "it defines balance status, it can be credit or debit", required = true )
     public BalanceStatus balanceStatus;
 
     public Date createdAt;
 
+    @ApiModelProperty( value = "Client data of owner account", required = true )
     public Client client;
 
     public AccountDTO() {

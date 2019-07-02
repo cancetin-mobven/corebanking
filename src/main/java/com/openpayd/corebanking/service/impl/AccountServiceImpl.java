@@ -25,13 +25,9 @@ public class AccountServiceImpl implements IAccountService {
     @Autowired
     AccountRepository accountRepository;
 
-  //  @Autowired
-   // ClientServiceImpl clientService;
-
     public List<AccountDTO> listAccounts() {
         return null;
     }
-
 
   //  @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void prepossess() {
@@ -55,19 +51,12 @@ public class AccountServiceImpl implements IAccountService {
 
        return accountList.stream()
                 .map( account-> new AccountDTO(account) ).collect(Collectors.toList());
-
-        //return new AccountDTO(account);
     }
 
     @Override
     public Account findById(Long accountId) {
 
         Optional<Account> account = accountRepository.findById(accountId);
-        /*
-                .orElseThrow(
-                        () -> new Exception("User not found with userId " + accountId));
-        */
-
        if(account.isPresent())
             return account.get();
         else
@@ -97,18 +86,6 @@ public class AccountServiceImpl implements IAccountService {
             account.setBalance(newBalance);
             account = accountRepository.save(account);
 
-/*
-                Double newBalance = account.getBalance() - amount;
-            if(account.getBalanceStatus() == BalanceStatus.DEBIT && newBalance < 0){
-                newBalance = -1 * newBalance;
-                account.setBalanceStatus(BalanceStatus.CREDIT);
-            }
-
-
-            account.setBalance(newBalance);
-            account = accountRepository.save(account);
-
-           */
         }  else {
 
             if(account.getBalanceStatus() == BalanceStatus.CREDIT){

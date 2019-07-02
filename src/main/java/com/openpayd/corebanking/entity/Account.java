@@ -28,13 +28,6 @@ public class Account {
     @JoinColumn(name = "client_id", nullable = false)
     public Client client;
 
-    //   public Transactionss transaction;
-/*
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false)
-    @Column(name = "client_id")
-    public Client client;
-*/
     public Long getId() {
         return id;
     }
@@ -66,30 +59,6 @@ public class Account {
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
     }
-
-    /*
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-*/
-/*
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false)
-    @Column(name = "client_id")
-    public Client client;
-*/
 
     public Client getClient() {
         return client;

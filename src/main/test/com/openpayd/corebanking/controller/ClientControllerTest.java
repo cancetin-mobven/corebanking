@@ -60,20 +60,7 @@ public class ClientControllerTest {
         clientController.listClientById(id,mockedRequest);
         verify(clientService, Mockito.times(1)).getClient(id);
     }
-    /*
-    @RequestMapping(value = "/saveClient", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ClientDTO> saveClient(@RequestBody ClientDTO clientDTO, HttpServletRequest request){
-        ClientDTO cto = null;
-        System.out.println(clientDTO.toString());
-        try{
-            cto = clientService.saveClient(clientDTO);
-        }catch (Exception e){
 
-        }
-        return new ResponseEntity<>(cto ,HttpStatus.CREATED);
-    }
-    */
     @org.junit.Test
     public void shouldSaveClient() {
         ClientDTO clientDTO = new ClientDTO();
@@ -99,7 +86,6 @@ public class ClientControllerTest {
 
         clientController.saveClient(clientDTO,mockedRequest);
 
-//        verify(clientService.saveClient(any(Object.class), Mockito.times(1)));
         verify(clientService, Mockito.times(1)).saveClient(Matchers.<ClientDTO>any());
     }
 

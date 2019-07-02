@@ -1,9 +1,7 @@
 package com.openpayd.corebanking.controller;
 
-import com.openpayd.corebanking.entity.Account;
 import com.openpayd.corebanking.entity.Client;
 import com.openpayd.corebanking.entity.dto.AccountDTO;
-import com.openpayd.corebanking.entity.dto.ClientDTO;
 import com.openpayd.corebanking.service.IAccountService;
 import com.openpayd.corebanking.service.IClientService;
 import io.swagger.annotations.Api;
@@ -13,14 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
 import java.util.List;
-import java.util.concurrent.Future;
 
 @RestController
 @RequestMapping("/account")
@@ -44,12 +38,12 @@ public class AccountController {
             response = AccountDTO.class,
             responseContainer = "Object"
     )
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO, HttpServletRequest request){
+    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO, HttpServletRequest request) {
         System.out.println(accountDTO.toString());
         AccountDTO account = null;
-        try{
+        try {
             account = accountService.createAccount(accountDTO);
-        }catch (Exception e){
+        } catch (Exception e) {
             returnCode = HttpStatus.INTERNAL_SERVER_ERROR;
             logger.error(e.getMessage());
         }
@@ -58,21 +52,21 @@ public class AccountController {
 
     @RequestMapping(value = "/accountByClient/{clientId}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List<AccountDTO>> listAccountByClient(@PathVariable("clientId") Long clientId, HttpServletRequest request){
+    public ResponseEntity<List<AccountDTO>> listAccountByClient(@PathVariable("clientId") Long clientId, HttpServletRequest request) {
         List<AccountDTO> accountDTOList = null;
 
         try {
             Client client = clientService.findClientById(clientId);
             accountDTOList = accountService.findByClient(client);
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.debug(e.getMessage());
             returnCode = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        if(accountDTOList == null){
-            return new ResponseEntity<List<AccountDTO>>(accountDTOList , HttpStatus.NOT_FOUND);
-        }else {
-            return new ResponseEntity<List<AccountDTO>>(accountDTOList , returnCode);
+        if (accountDTOList == null) {
+            return new ResponseEntity<List<AccountDTO>>(accountDTOList, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<List<AccountDTO>>(accountDTOList, returnCode);
         }
     }
 

@@ -2,7 +2,6 @@ package com.openpayd.corebanking.controller;
 
 import com.openpayd.corebanking.entity.Account;
 import com.openpayd.corebanking.entity.Client;
-import com.openpayd.corebanking.entity.Transaction;
 import com.openpayd.corebanking.entity.dto.TransactionDTO;
 import com.openpayd.corebanking.service.IAccountService;
 import com.openpayd.corebanking.service.ITransactionService;
@@ -12,19 +11,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
-import org.junit.Test;
 
 public class TransactionControllerTest {
 
@@ -49,7 +45,7 @@ public class TransactionControllerTest {
     }
 
     @org.junit.Test
-    public void shouldGetClient_NotFoundHttpCode() {
+    public void shouldDoTransferNotFoundHttpCode() {
         List<Client> clients = new ArrayList<Client>();
         HttpServletRequest mockedRequest = mock(HttpServletRequest.class);
         Long id = 0L;
@@ -57,39 +53,51 @@ public class TransactionControllerTest {
         Account debitAccount = new Account();
         debitAccount.setId(1L);
         transactionDTO.setDebitAccount(debitAccount);
+        transactionDTO.setCreditAccount(debitAccount);
+
         when(accountService.findById(any(Long.class))).thenReturn(null);
-//      accountService.findById(transactionDTO.getDebitAccount().getId());
         ResponseEntity<TransactionDTO> ld= transactionController.doTransfer(transactionDTO, mockedRequest);
 
         assertEquals(
                 HttpStatus.NOT_FOUND.value() ,
                 ld.getStatusCodeValue());
-
     }
 
-    /*
-    *
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<TransactionDTO> doTransfer(@RequestBody TransactionDTO transactionDTO, HttpServletRequest request) {
-
-        Account debitAccount = accountService.findById(transactionDTO.getDebitAccount().getId());
-        if(debitAccount == null){
-            return new ResponseEntity<TransactionDTO>(transactionDTO, HttpStatus.NOT_FOUND);
-        }
-
+    @org.junit.Test
+    public void shouldDoTransferCreateTransactionNotInvokedSameAccounts() {
+        List<Client> clients = new ArrayList<Client>();
+        HttpServletRequest mockedRequest = mock(HttpServletRequest.class);
+        Long id = 0L;
+        TransactionDTO transactionDTO = new TransactionDTO();
+        Account debitAccount = new Account();
+        debitAccount.setId(1L);
         transactionDTO.setDebitAccount(debitAccount);
-        Account creditAccount = accountService.findById(transactionDTO.getCreditAccount().getId());
-        if(creditAccount == null){
-            return new ResponseEntity<TransactionDTO>(transactionDTO, HttpStatus.NOT_FOUND);
-        }
+        when(accountService.findById(any(Long.class))).thenReturn(debitAccount); // always return same
 
-        transactionDTO.setCreditAccount(creditAccount);
-        //Account creditAccount = transactionDTO.getCreditAccount();
+        ResponseEntity<TransactionDTO> dt = transactionController.doTransfer(transactionDTO, mockedRequest);
+        verify(transactionService,Mockito.times(0)).createTransaction(any(TransactionDTO.class));
 
-        return new ResponseEntity<TransactionDTO>(transactionService.createTransaction(transactionDTO), HttpStatus.CREATED);
-
-        //  return null;
     }
-    * */
+
+    @org.junit.Test
+    public void shouldDoTransferCreateTransaction() {
+        List<Client> clients = new ArrayList<Client>();
+        HttpServletRequest mockedRequest = mock(HttpServletRequest.class);
+        Long id = 0L;
+        TransactionDTO transactionDTO = new TransactionDTO();
+        Account debitAccount = new Account();
+        debitAccount.setId(1L);
+        Account creditAccount = new Account();
+        creditAccount.setId(2L);
+        transactionDTO.setDebitAccount(debitAccount);
+        transactionDTO.setCreditAccount(creditAccount);
+        when(accountService.findById(1l)).thenReturn(debitAccount);
+        when(accountService.findById(2l)).thenReturn(creditAccount);
+
+        ResponseEntity<TransactionDTO> dt = transactionController.doTransfer(transactionDTO, mockedRequest);
+        verify(transactionService,Mockito.times(1)).createTransaction(any(TransactionDTO.class));
+    }
+
+
+
 }
