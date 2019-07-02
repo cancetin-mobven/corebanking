@@ -24,7 +24,7 @@ import java.util.concurrent.Future;
 
 @RestController
 @RequestMapping("/account")
-@Api(value="account" , description =" account man.")
+@Api(value = "accounts", description = "Account management api")
 public class AccountController {
 
     private Logger logger = LoggerFactory.getLogger(AccountController.class);

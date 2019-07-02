@@ -44,6 +44,10 @@ public class TransactionController {
     @ResponseBody
     public ResponseEntity<TransactionDTO> doTransfer(@RequestBody TransactionDTO transactionDTO, HttpServletRequest request) {
 
+        if(transactionDTO.getDebitAccount() == null || transactionDTO.getCreditAccount() == null ){
+            return new ResponseEntity<TransactionDTO>(transactionDTO, HttpStatus.NOT_FOUND);
+        }
+
         Account debitAccount = accountService.findById(transactionDTO.getDebitAccount().getId());
         if(debitAccount == null){
             return new ResponseEntity<TransactionDTO>(transactionDTO, HttpStatus.NOT_FOUND);

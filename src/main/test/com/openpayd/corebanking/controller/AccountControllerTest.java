@@ -51,32 +51,11 @@ public class AccountControllerTest {
     }
 
     @org.junit.Test
-    public void listAccountByClient() {
+    public void shouldListAccountByClient() {
         List<Client> clients = new ArrayList<Client>();
         HttpServletRequest  mockedRequest = mock(HttpServletRequest.class);
         accountController.listAccountByClient(1L,mockedRequest);
         verify(clientService, Mockito.times(1)).findClientById(1L);
     }
-
-
-    /*
-* @RequestMapping(value = "/saveAddress", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<AddressDTO> saveAddress(@RequestBody AddressDTO addressDTO, HttpServletRequest request){
-
-        AddressDTO  addressDto = null;
-        try{
-            addressDto = addressService.createAddress(addressDTO);
-        }catch (Exception e){
-            returnCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<AddressDTO>(addressDto , returnCode);
-    }
-* */
-
-
-
-
 
 }

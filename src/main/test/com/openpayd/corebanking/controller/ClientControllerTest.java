@@ -45,7 +45,7 @@ public class ClientControllerTest {
     }
 
     @org.junit.Test
-    public void listClient() {
+    public void shouldListClients() {
         List<Client> clients = new ArrayList<Client>();
         HttpServletRequest  mockedRequest = mock(HttpServletRequest.class);
         clientController.listClient(mockedRequest);
@@ -53,7 +53,7 @@ public class ClientControllerTest {
     }
 
     @org.junit.Test
-    public void listClientById() {
+    public void shouldGetClient() {
         List<Client> clients = new ArrayList<Client>();
         HttpServletRequest  mockedRequest = mock(HttpServletRequest.class);
         Long id = 0L;
@@ -75,7 +75,7 @@ public class ClientControllerTest {
     }
     */
     @org.junit.Test
-    public void saveClient() {
+    public void shouldSaveClient() {
         ClientDTO clientDTO = new ClientDTO();
         clientDTO.setId(1);
         clientDTO.setName("name");
